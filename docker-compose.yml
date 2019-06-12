@@ -1,0 +1,22 @@
+version: "3.7"
+services:
+  app:
+    image: maven:3.5.2-jdk-8
+    entrypoint: ["tail", "-f", "/dev/null"]
+    volumes:
+      - .:/app
+      - .m2:/root/.m2
+  db:
+    image: postgres:9-alpine
+    volumes:
+      - .pg_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: 123456
+  j2ee:
+    image: tomcat:latest
+    volumes:
+      - ./j2ee/target/j2ee-1.0.war:/usr/local/tomcat/webapps/app.war
+    ports:
+      - "8080:8080"
